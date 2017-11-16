@@ -12,6 +12,7 @@ class Main extends CI_Controller
 	public function _remap($method) 
     {
 		$this->segs = $this->uri->segment_array();
+		$data = array();
 		if ($this->input->is_ajax_request()) {
             //ajax 이면 헤더 푸터 없음
 			if (method_exists($this, $method)) {
@@ -22,7 +23,7 @@ class Main extends CI_Controller
 			if (method_exists($this, $method))  $this -> {"{$method}"}();
 		} else {
             //ajax가 아니면
-			$this->load->view("/common/header");
+			$this->load->view("/common/header",$data);
 			if (method_exists($this, $method)) {
 				$this->{"{$method}"}();
 			}
@@ -32,10 +33,24 @@ class Main extends CI_Controller
 	}
 
 	function index(){
-        $data = array();
-        $this->load->view("/main/main_v",$data);
-        //$this->load->view("/main/index.html",$data);
-    }//end index
+
+		$data = array();		
+		$this->load->view("/main/main_v",$data);
+		
+		
+		
+        
+	}//end index
+	
+	function test(){
+		$this->db->from("ci_session");
+		$sql = $this->db->get();
+		$q = array();
+		if($sql->num_rows() > 0){
+			$q = $sql->result_array();
+		}
+		print_r($q);
+	}
 
 	function member_list()
 	{
